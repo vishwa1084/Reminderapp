@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <limits>
+#include <chrono>
+#include <ctime>
 using namespace std;
 class Reminder{
 
@@ -37,6 +39,9 @@ public:
         getline(cin,description);
         cout<<"enter the time of submission";
         cin>>subTime;
+        auto now=std::chrono::system_clock::now();
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+        entrytime=std::ctime(&currentTime);
     }
      void Display(){
         cout<<"Task:";
@@ -45,7 +50,7 @@ public:
         cout<<day<<"-"<<month<<"-"<<year<<endl;
         cout<<"description:";
         cout<<description<<endl;
-
+        cout<<"Time of entry :"<<entrytime<<endl;
         cout<<"time of submission:";
         cout<<subTime;
     }
@@ -63,9 +68,9 @@ int main(){
     vector<Reminder> r;
     while(true){
         int choice;
-        cout<<"1.To push new tasks";
-        cout<<"2.display";
-        cout<<"3.update status";
+        cout<<"1.To push new tasks"<<endl;
+        cout<<"2.display"<<endl;
+        cout<<"3.update status"<<endl;
         cout<<"4.exit";
         cin>>choice;
         switch(choice){
