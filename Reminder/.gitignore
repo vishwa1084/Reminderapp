@@ -1,0 +1,11 @@
+build/
+*.user
+*.autosave
+*.o
+*.obj
+*.tmp
+*.log
+ui_*.h
+moc_*.cpp
+CMakeCache.txt
+CMakeFiles/
