@@ -49,6 +49,10 @@ public:
         cout<<"time of submission:";
         cout<<subTime;
     }
+    void task_status_update(){
+        
+        status=true;
+    }
     
 
     
@@ -57,18 +61,44 @@ public:
 };
 int main(){
     vector<Reminder> r;
-    int n;
-    cout<<"How many tasks do u wanna add?";
-    cin>>n;
-    cin.ignore(numeric_limits<streamsize>::max(),'\n');
-    for(int i=0;i<n;i++){
-        Reminder temp;
-        temp.getData();
-        r.push_back(temp);
+    while(true){
+        int choice;
+        cout<<"1.To push new tasks";
+        cout<<"2.display";
+        cout<<"3.update status";
+        cout<<"4.exit";
+        cin>>choice;
+        switch(choice){
+            case 1:
+                int n;
+                cout<<"How many tasks do u wanna add?";
+                cin>>n;
+                cin.ignore(numeric_limits<streamsize>::max(),'\n');
+                for(int i=0;i<n;i++){
+                    Reminder temp;
+                    temp.getData();
+                    r.push_back(temp);
+                }
+                break;
+            case 2:
+                for(int i=0;i<r.size();i++){
+                    cout<<i+1<<".";
+                    r[i].Display();
+                }
+                break;
+            case 3:
+                int task_no;
+                cout<<"enter the task u wanna change status for";
+                cin>>task_no; 
+                r[task_no-1].task_status_update();
+                break; 
+            case 4:
+                return 0;
+                
+            }
     }
-    for(int i=0;i<r.size();i++){
-        r[i].Display();
-    }
-
+    
+    
+    
     
 }
