@@ -3,24 +3,21 @@
 #include <limits>
 #include <chrono>
 #include <ctime>
+#include <string>
+#include <cstdlib>
 using namespace std;
 class Reminder{
-
-
     string task;
-    int day;
-    int month;
-    int year;
+    string subdate;
     bool status;
     string description;
     string subTime;
     string entrytime;
+    
 public:
-    Reminder(string task="bullshit assesment",int day=0,int month=0,int year=2025,bool stat=false,string desc="bs"){
+    Reminder(string task="bullshit assesment",string date="DD-MM-YYYY",bool stat=false,string desc="bs"){
         this->task=task;
-        this->day=day;
-        this->month=month;
-        this->year=year;
+        this->subdate=date;
         this->status=stat;
         this->description=desc;
     }
@@ -28,12 +25,8 @@ public:
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
         cout<<"enter the name of the task";
         getline(cin,task);
-        cout<<"enter the day of the month(day..1-31)";
-        cin>>day;
-        cout<<"enter the month(1-12)";
-        cin>>month;
-        cout<<"enter the year";
-        cin>>year;
+        cout<<"enter the submission date in DD-MM-YYYY format";
+        getline(cin,subdate);
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
         cout<<"additional info about the task";
         getline(cin,description);
@@ -47,22 +40,34 @@ public:
         cout<<"Task:";
         cout<<task;
         cout<<endl;
-        cout<<day<<"-"<<month<<"-"<<year<<endl;
+        
         cout<<"description:";
         cout<<description<<endl;
         cout<<"Time of entry :"<<entrytime<<endl;
         cout<<"time of submission:";
-        cout<<subTime;
+        cout<<subTime<<endl;
+        cout<<"status:"<<status<<endl;
     }
     void task_status_update(){
         
         status=true;
     }
-    
-
-    
-
-
+    void sendNotification(){
+        string command="notify-send 'Reminder' 'Task: "+task+" is due on "+subdate+" at "+subTime+"'";
+        system(command.c_str());
+    }
+    bool isDueToday() const{
+        using namespace std::chrono;
+        auto now =system_clock::now();
+        std::time_t t=system_clock::to_time_t(now);
+        std::tm* local=std::localtime(&t);
+        int day=local->tm_mday;
+        int month=local->tm_mon+1;
+        int year=local->tm_year+1900;
+        char todaystr[11];
+        std::snprintf(todaystr,sizeof(todaystr),"%02d-%02d-%04d",day,month,year);
+        return subdate==todaystr;
+    }
 };
 int main(){
     vector<Reminder> r;
@@ -101,9 +106,5 @@ int main(){
                 return 0;
                 
             }
-    }
-    
-    
-    
-    
+    }   
 }
